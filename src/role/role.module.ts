@@ -12,12 +12,15 @@ import { DatabaseModule } from '../database/database.module';
 import { StudentModule } from '../user/student.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoleEntity } from './Entity/roleEntity';
+import { PermissionModule } from '../permission/permission.module'
+import { RoleUserEntity } from '../permission/Entity/userrole';
 
 @Module({
   imports: [
     DatabaseModule,
     StudentModule,
-    TypeOrmModule.forFeature([RoleEntity]),
+    PermissionModule,
+    TypeOrmModule.forFeature([RoleEntity, RoleUserEntity]),
   ],
   providers: [RoleService, ...RoleProviders],
   exports: [RoleService],

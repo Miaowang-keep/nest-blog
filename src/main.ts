@@ -13,6 +13,7 @@ import { TransformInterceptor } from './interceptor/transform.interceptor';
 import * as express from 'express';
 import { logger } from './middleware/logger.middleware';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
+import { FormatterDateInterceptor } from './interceptor/formatterDate.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,6 +23,8 @@ async function bootstrap() {
   app.use(logger);
   //日志返回信息拦截器
   app.useGlobalInterceptors(new TransformInterceptor());
+  //日志返回日期格式化
+  app.useGlobalInterceptors(new FormatterDateInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
   app.setGlobalPrefix('blog');
   const swaggerOptions = new DocumentBuilder()

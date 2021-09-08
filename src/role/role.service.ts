@@ -21,6 +21,7 @@ import { RoleEntity } from './Entity/roleEntity';
 import { RoleUserEntity } from '../permission/Entity/userrole';
 import { sequelize } from '../database/sequelize';
 import { UserRoleDao } from './Dto/userRoleDao';
+
 const { QueryTypes } = require('sequelize');
 import { StudentService } from '../user/student.service';
 import * as utils from '../share/utils';
@@ -29,6 +30,7 @@ import { Logger } from 'src/utils/log4js';
 import { getManager, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isEmptyObject } from '../share/utils';
+import { PermissionService } from '../permission/permission.service';
 
 @Injectable()
 export class RoleService {
@@ -36,6 +38,7 @@ export class RoleService {
     @InjectRepository(RoleEntity)
     private readonly roleRepository: Repository<RoleEntity>,
     private readonly studentService: StudentService,
+    private readonly permissionsService: PermissionService,
   ) {}
 
   /**
@@ -62,7 +65,7 @@ export class RoleService {
         return new Response('角色名称不能重复', null, 200);
       } else {
         try {
-          this.roleRepository.save(
+          const rolesResult = await this.roleRepository.save(
             Object.assign(new RoleEntity(), {
               roleName: createRoleDao.roleName,
               roleFlag: createRoleDao.roleFlag,
@@ -70,6 +73,7 @@ export class RoleService {
               createUserid: createRoleDao.createUserid,
             }),
           );
+          return new Response('保存角色成功', rolesResult, 200);
         } catch (e) {
           Logger.info(e);
           throw new BadRequestException('添加失败');
@@ -83,8 +87,6 @@ export class RoleService {
    * @param roleid
    */
   async findRoleByid(roleid: number) {
-    Logger.info('角色信息');
-    Logger.info(this.roleRepository.findOne(roleid));
     return this.roleRepository.findOne(roleid);
   }
 
@@ -118,8 +120,17 @@ export class RoleService {
       return new Response('删除失败，角色不存在！', null, 200);
     } else {
       //删除之前去判断关联表里面有没有这个角色的数据
+      if (roleObject.roleUserLists && roleObject.roleUserLists.length) {
+        return new Response('当前角色已授权给用户', null, 200);
+      } else {
+        try {
+          const removeResult = await this.roleRepository.remove(roleObject);
+          return new Response('删除角色成功', null, 200);
+        } catch (error) {}
+      }
     }
   }
+
   async findRoleinfoByid(roleid: number) {
     const roleObject = await this.findRoleByid(roleid);
     if (utils.isUndef(roleObject)) {

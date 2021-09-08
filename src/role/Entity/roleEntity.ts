@@ -6,8 +6,16 @@
  * @LastEditors: miaowang
  */
 
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { RoleUserEntity } from '../../permission/Entity/userrole';
+
 @Entity('role')
 export class RoleEntity {
   @PrimaryGeneratedColumn()
@@ -22,21 +30,18 @@ export class RoleEntity {
   @Column()
   roleState: string;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @Column()
   createUserid: number;
 
-  @Column()
+  @Column({ default: null })
   updateUserid: number;
 
-  @OneToMany(
-    (type) => RoleUserEntity,
-    (roleUserEntity) => roleUserEntity.roleid,
-  )
+  @OneToMany((type) => RoleUserEntity, (roleUserEntity) => roleUserEntity.role)
   roleUserLists: RoleUserEntity[];
 }
