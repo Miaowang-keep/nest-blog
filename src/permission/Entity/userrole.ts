@@ -4,7 +4,13 @@
  *@Date: 2021-08-30 16:08:31
  *@LastEditTime: 2021-08-30 16:08:31
  */
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+} from 'typeorm';
 import { RoleEntity } from '../../role/Entity/roleEntity';
 
 @Entity('userrole')
@@ -17,6 +23,6 @@ export class RoleUserEntity {
   userid: number;
   @Column()
   createUserid: number;
-  @ManyToOne(() => RoleEntity, (role) => role.roleid)
+  @ManyToOne(() => RoleEntity, (role) => role.roleUserLists)
   role: RoleEntity;
 }
