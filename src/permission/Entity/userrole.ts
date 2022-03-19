@@ -12,6 +12,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { RoleEntity } from '../../role/Entity/roleEntity';
+import { UserEntity } from '../../user/Entity/studentEntity';
 
 @Entity('userrole')
 export class RoleUserEntity {
@@ -25,4 +26,7 @@ export class RoleUserEntity {
   createUserid: number;
   @ManyToOne(() => RoleEntity, (role) => role.roleUserLists)
   role: RoleEntity;
+
+  @ManyToOne(() => UserEntity, (user) => user.roleUserLists)
+  user: UserEntity;
 }

@@ -35,6 +35,7 @@ import { CreateRoleDao } from './Dto/createRoleDao';
 import { UpdateRoleDao } from './Dto/updateRoleDao';
 import { UserRoleDao } from './Dto/userRoleDao';
 import { Response } from '../user/Bo/response';
+import { EmpowerToMenu } from './Dto/empowerToMenu';
 @ApiTags('权限管理')
 @ApiBearerAuth()
 @Controller('role')
@@ -90,5 +91,16 @@ export class RoleController {
   @UsePipes(ValidationPipe)
   userAuthorizeRole(@Body() userRoleDao: UserRoleDao): Promise<Response> {
     return this.roleService.userAuthorizeRole(userRoleDao);
+  }
+
+  @Post('empower')
+  @ApiBody({
+    description: '角色给菜单授权',
+    type: EmpowerToMenu,
+  })
+  @HttpCode(200)
+  @ApiResponse({ type: [Response] })
+  authorize(@Body() empowerToMenu: EmpowerToMenu): Promise<Response> {
+    return this.roleService.roleAuthorizeMenu(empowerToMenu);
   }
 }

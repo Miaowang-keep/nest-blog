@@ -17,6 +17,7 @@ import { RoleModule } from './role/role.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConfig } from '../config/db';
 import { PermissionModule } from './permission/permission.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PermissionModule } from './permission/permission.module';
     AuthModule,
     RoleModule,
     PermissionModule,
+    MenuModule,
   ],
   controllers: [AppController, StudentController, RoleController],
   providers: [AppService],

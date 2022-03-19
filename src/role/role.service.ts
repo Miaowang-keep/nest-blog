@@ -27,10 +27,11 @@ import { StudentService } from '../user/student.service';
 import * as utils from '../share/utils';
 import * as sqlUtils from '../share/sqlUtils';
 import { Logger } from 'src/utils/log4js';
-import { getManager, Repository } from 'typeorm';
+import { getManager, Repository, getConnection } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isEmptyObject } from '../share/utils';
 import { PermissionService } from '../permission/permission.service';
+import { EmpowerToMenu } from './Dto/empowerToMenu';
 
 @Injectable()
 export class RoleService {
@@ -131,6 +132,10 @@ export class RoleService {
     }
   }
 
+  /**
+   * @description 查询角色信息
+   * @param roleid
+   */
   async findRoleinfoByid(roleid: number) {
     const roleObject = await this.findRoleByid(roleid);
     if (utils.isUndef(roleObject)) {
@@ -140,6 +145,10 @@ export class RoleService {
     }
   }
 
+  /**
+   * @description 用户给觉得授权
+   * @param userRoleDao
+   */
   async userAuthorizeRole(userRoleDao: UserRoleDao) {
     //判断有没有这个用户
     try {
@@ -163,6 +172,32 @@ export class RoleService {
       logging: true,
     });
     Logger.info(roleList);
+    return new Response('调用成功', null, 200);
+  }
+
+  /**
+   * @description 角色和菜单的关联
+   */
+  async roleAuthorizeMenu(empowerToMenu: EmpowerToMenu) {
+    const menuIdList = empowerToMenu.menuIdList;
+    const sqlParams = [];
+    if (menuIdList.length) {
+      menuIdList.forEach((item) => {
+        const params = `(${item},${empowerToMenu.roleid}),`;
+        sqlParams.push(params);
+      });
+    }
+    let sql = '';
+    sql = ` insert into rolemenu(menuid,roleid) values`;
+    if (sqlParams.length) {
+      sqlParams.forEach((item) => {
+        sql += item;
+      });
+    }
+    sql = sql.substr(0, sql.length - 1);
+    const res = await getManager().query(sql);
+    Logger.info('res');
+    Logger.info(res);
     return new Response('调用成功', null, 200);
   }
 }

@@ -5,7 +5,8 @@
  * @LastEditTime: 2021-08-23 15:10:11
  * @LastEditors: miaowang
  */
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { RoleUserEntity } from '../../permission/Entity/userrole';
 
 @Entity('userinfo')
 export class UserEntity {
@@ -18,7 +19,7 @@ export class UserEntity {
   @Column()
   realname: string;
 
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @Column()
@@ -30,6 +31,9 @@ export class UserEntity {
   @Column()
   userstate: string;
 
-  @Column({ select: false })
+  @Column()
   password_salt: string;
+
+  @OneToMany((type) => RoleUserEntity, (roleUserEntity) => roleUserEntity.user)
+  roleUserLists: RoleUserEntity[];
 }

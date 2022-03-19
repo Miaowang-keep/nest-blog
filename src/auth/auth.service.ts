@@ -9,6 +9,8 @@ import { Injectable } from '@nestjs/common';
 import { StudentService } from '../user/student.service';
 import { JwtService } from '@nestjs/jwt';
 import { encryptPassword } from '../utils/cryptogram';
+import { UserinfoBo } from '../user/Bo/UserinfoBo';
+import * as utils from '../share/utils';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +18,7 @@ export class AuthService {
     private readonly studentService: StudentService,
     private readonly jwtService: JwtService,
   ) {}
+
   /**
    * @Author: miaowang
    * @description: JWT校验用户名密码是否正确
@@ -48,6 +51,7 @@ export class AuthService {
       };
     }
   }
+
   /**
    * @Author: miaowang
    * @description: jwt签证，生成token
@@ -67,11 +71,17 @@ export class AuthService {
       const resultUserInfo = await this.studentService.findUserinfoById(
         payload.sub,
       );
+      const userinfoBo = new UserinfoBo();
+      const userinfo = utils.objAssignedProperty(userinfoBo, resultUserInfo);
+      /*      userinfoBo = Object.assign(userinfoBo, {
+        userid: resultUserInfo.userid,
+        ceshi: '1',
+      })*/
       return {
         code: 200,
         data: {
           token,
-          resultUserInfo: resultUserInfo,
+          data: userinfo,
         },
         msg: `登录成功`,
       };

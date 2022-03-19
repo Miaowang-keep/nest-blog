@@ -32,7 +32,7 @@ export class StudentService {
    */
   async findByUsername(username: string): Promise<any | undefined> {
     try {
-      await this.userRepository.findByName(username);
+      return await this.userRepository.findByName(username);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -135,7 +135,7 @@ export class StudentService {
         FROM
           userinfo u
           LEFT JOIN ( SELECT t1.*, t2.userid FROM role t1, userrole t2 WHERE t1.roleid = t2.roleid ) t3 ON u.userid = t3.userid
-          where u.userid =?}`;
+          where u.userid =?`;
     const userObj = await entityManager.query(sql, [userid]);
     Logger.info('userObj');
     Logger.info(userObj);

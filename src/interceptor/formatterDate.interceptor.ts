@@ -8,6 +8,10 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Logger } from '../utils/log4js';
 
+/**
+ * @author miaowang
+ * @description 格式化拦截器
+ */
 @Injectable()
 export class FormatterDateInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -17,9 +21,8 @@ export class FormatterDateInterceptor implements NestInterceptor {
         if (data.data) {
           for (const key in data.data) {
             if (
-              Object.prototype.toString.call(data.data[key]) == '[object Date]'
+              Object.prototype.toString.call(data.data[key]) === '[object Date]'
             ) {
-              //为日期格式，我们需要转化他的格式
               data.data[key] = this.transformTimestamp(data.data[key]);
             }
           }
