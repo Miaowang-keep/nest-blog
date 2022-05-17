@@ -132,8 +132,8 @@ export function listToTree_SingleFor(
 /**
  * @description 列表转树 多根节点版
  * @param list
- * @param id id属性名
- * @param pid pid父属性名
+ * @param myId
+ * @param myPid
  */
 export function listToTree_NoPid(
   list: any,

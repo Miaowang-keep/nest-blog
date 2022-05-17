@@ -81,12 +81,12 @@ export class MenuService {
                        )
                      )`;
     const menuList = await getManager().query(sql, [userid]);
-    let menuTree = [];
-    try {
+    const menuTree = [];
+    /*    try {
       menuTree = utils.listToTree_NoPid(menuList, 'menuid', 'pmenuid');
     } catch (e) {
       throw e;
-    }
+    }*/
 
     return new Response('调用成功', menuList, 200);
   }

@@ -9,10 +9,10 @@ import { Dialect } from 'sequelize/types';
 
 export const dbConfig = {
   mysql: {
-    port: 3306,
-    host: 'localhost',
+    port: 3307,
+    host: '172.31.60.75',
     username: 'root',
-    password: 'mwsh20171220',
+    password: '123456',
     database: 'koa2', // 库名
     connectionLimit: 10, // 连接限制
     dialect: 'mysql' as Dialect,
