@@ -15,7 +15,7 @@ import { Logger } from 'src/utils/log4js';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 
-/* 
+/*
  ArgumentMetadata 接口中包含三个参数：
    type：参数放在请求的位置 eg:body,param 等
    metatype: 属性的元类型，例如String。 如果在函数签名中省略类型声明，或者使用原生 JavaScript，则为undefined。
@@ -30,14 +30,32 @@ export class ValidationPipe implements PipeTransform {
     //将普通对象转化为指定的类的实例
     const object = plainToClass(metatype, value);
     const errors = await validate(object);
-    if (errors.length > 0) {
-      const msg = Object.values(errors[0].constraints)[0];
-      Logger.error(`Validation failed: ${msg}`);
+    if (errors && errors.length > 0) {
+      const msg = this.formatterErrorMsg(errors);
+      Logger.info(msg);
+
+      // const msg = Object.values(errors[0].constraints)[0];
+      // Logger.error(`Validation failed: ${msg}`);
       throw new BadRequestException(`Validation failed: ${msg}`);
     }
     return value;
   }
-
+  formatterErrorMsg(errorLists) {
+    let result = '';
+    if (errorLists && errorLists.length) {
+      errorLists.forEach((errorList) => {
+        const msgArray = errorList.children;
+        if (msgArray && msgArray.length > 0) {
+          msgArray.forEach((item) => {
+            result += `${Object.values(item.constraints)}  `;
+          });
+        }
+      });
+    } else {
+      throw new Error('arguments is empty Array');
+    }
+    return result;
+  }
   private toValidate(data: any): boolean {
     const type: any[] = [String, Boolean, Number, Array, Object];
     return !type.includes(data);

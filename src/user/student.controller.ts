@@ -28,6 +28,7 @@ import {
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { createUserBo } from './Bo/createUserBo';
+import { queryUserListDto } from './Dto/pageparam';
 import { Response } from './Bo/response';
 import { UserDto } from './Dto/student.dto';
 import { LoginDTO } from './Dto/userDao';
@@ -130,5 +131,16 @@ export class StudentController {
   @ApiOkResponse({ type: [Response] })
   findUserById(@Param('userid') userid: string): Promise<Response> {
     return this.studentService.findUserinfoAllById(userid);
+  }
+
+  @Post('getUserList')
+  @HttpCode(200)
+  @ApiBody({
+    description: '分页查询用户列表',
+    type: queryUserListDto,
+  })
+  @UsePipes(new ValidationPipe())
+  queryUserList(@Body() queryparams: queryUserListDto): Promise<Response> {
+    return this.studentService.getUserList(queryparams);
   }
 }

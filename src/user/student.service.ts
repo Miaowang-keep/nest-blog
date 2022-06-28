@@ -19,6 +19,8 @@ import * as utils from '../share/utils';
 import * as sqlUtils from '../share/sqlUtils';
 import { UserRepository } from './student.providers';
 import { getManager } from 'typeorm';
+import { Queryparams } from './Dto/pageparam';
+import { queryUserListDto } from './Dto/queryUserListDto';
 
 @Injectable()
 export class StudentService {
@@ -148,5 +150,13 @@ export class StudentService {
 
   async findUserinfoById(userid: number) {
     return this.userRepository.findOne(userid);
+  }
+  async getUserList(queryparams: Queryparams<queryUserListDto>) {
+    const { pageParam, requestParameters } = queryparams;
+    const fs = require('fs');
+    fs.writeFile('123.key', 'chenjiahaoshisb', 'utf8', function (err) {
+      console.log(err);
+    });
+    return new Response('更新成功！', {}, 200);
   }
 }

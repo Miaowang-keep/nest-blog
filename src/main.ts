@@ -9,7 +9,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
-
+import { ValidationPipe } from './pipe/validation.pipe';
 import * as express from 'express';
 import { logger } from './middleware/logger.middleware';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
@@ -23,6 +23,7 @@ async function bootstrap() {
   app.use(logger);
   //日志返回信息拦截器
   app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalPipes(new ValidationPipe());
   //日志返回日期格式化
   app.useGlobalInterceptors(new FormatterDateInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());

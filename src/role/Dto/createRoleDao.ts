@@ -19,7 +19,7 @@ import {
 } from 'class-validator';
 
 export class CreateRoleDao {
-  @IsString()
+  @IsString({ message: '必须是字符串' })
   @ApiProperty()
   roleName: string;
 
