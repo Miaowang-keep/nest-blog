@@ -9,7 +9,7 @@ import { UserDto } from '../Dto/student.dto';
 import { UserEntity } from '../Entity/studentEntity';
 
 export class createUserBo extends UserDto {
-  constructor(user: UserEntity) {
+  constructor(user: any) {
     super(user);
   }
 }

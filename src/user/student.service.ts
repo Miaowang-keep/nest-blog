@@ -19,8 +19,8 @@ import * as utils from '../share/utils';
 import * as sqlUtils from '../share/sqlUtils';
 import { UserRepository } from './student.providers';
 import { getManager } from 'typeorm';
-import { Queryparams } from './Dto/pageparam';
-import { queryUserListDto } from './Dto/queryUserListDto';
+import { queryUserListDto } from './Dto/pageparam';
+import { QueryUserListReq } from './Dto/queryUserListDto';
 
 @Injectable()
 export class StudentService {
@@ -151,12 +151,28 @@ export class StudentService {
   async findUserinfoById(userid: number) {
     return this.userRepository.findOne(userid);
   }
-  async getUserList(queryparams: Queryparams<queryUserListDto>) {
-    const { pageParam, requestParameters } = queryparams;
-    const fs = require('fs');
-    fs.writeFile('123.key', 'chenjiahaoshisb', 'utf8', function (err) {
-      console.log(err);
-    });
-    return new Response('更新成功！', {}, 200);
+  async getUserList(queryparams: queryUserListDto<QueryUserListReq>) {
+    const {
+      pageParam,
+      requestParamDto: { username: username, realname: realname },
+    } = queryparams;
+    let paramsSql = ' 1=1';
+    const paramsValue = {};
+    if (username && username.length) {
+      paramsSql = `and user.username like :username `;
+      paramsValue['username'] = `&${username}&`;
+    }
+    if (realname && realname.length) {
+      paramsSql = `and user.realname like :realname `;
+      paramsValue['realname'] = `&${realname}&`;
+    }
+    const users = await getManager()
+      .createQueryBuilder(UserEntity, 'user')
+      .where(`${paramsSql}`, paramsValue)
+      .skip(pageParam.pageSize * (pageParam.pageIndex - 1))
+      .take(pageParam.pageSize)
+      .getMany();
+
+    return new Response('更新成功！', users, 200);
   }
 }

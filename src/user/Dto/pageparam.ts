@@ -1,15 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, ValidateNested } from 'class-validator';
+import { ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { PageDto } from './pageDto';
-export class queryUserListDto {
+import { QueryUserListReq } from './queryUserListDto';
+
+export class queryUserListDto<QueryUserListReq> {
   @ApiProperty({ description: '分页参数' })
   @ValidateNested()
   @Type(() => PageDto)
   pageParam: PageDto;
 
-  @IsNotEmpty({ message: '用户名不为空' })
-  readonly username: string;
-
-  readonly realname: string;
+  @ApiProperty({
+    description: '分页查询用户搜索条件',
+    type: QueryUserListReq,
+  })
+  @ValidateNested()
+  @Type(() => QueryUserListReq)
+  requestParamDto: QueryUserListReq;
 }

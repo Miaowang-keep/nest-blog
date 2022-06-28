@@ -29,6 +29,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { createUserBo } from './Bo/createUserBo';
 import { queryUserListDto } from './Dto/pageparam';
+import { QueryUserListReq } from './Dto/queryUserListDto';
 import { Response } from './Bo/response';
 import { UserDto } from './Dto/student.dto';
 import { LoginDTO } from './Dto/userDao';
@@ -140,7 +141,9 @@ export class StudentController {
     type: queryUserListDto,
   })
   @UsePipes(new ValidationPipe())
-  queryUserList(@Body() queryparams: queryUserListDto): Promise<Response> {
+  queryUserList(
+    @Body() queryparams: queryUserListDto<QueryUserListReq>,
+  ): Promise<Response> {
     return this.studentService.getUserList(queryparams);
   }
 }

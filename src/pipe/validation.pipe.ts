@@ -40,7 +40,13 @@ export class ValidationPipe implements PipeTransform {
     }
     return value;
   }
-  formatterErrorMsg(errorLists) {
+
+  /**
+   * @description 格式化validation的参数校验错误错误
+   * @param errorLists
+   * @return string
+   */
+  formatterErrorMsg(errorLists: Array<any>): string {
     let result = '';
     if (errorLists && errorLists.length) {
       errorLists.forEach((errorList) => {
@@ -56,6 +62,12 @@ export class ValidationPipe implements PipeTransform {
     }
     return result;
   }
+
+  /**
+   * @description 类型判断
+   * @param data
+   * @private
+   */
   private toValidate(data: any): boolean {
     const type: any[] = [String, Boolean, Number, Array, Object];
     return !type.includes(data);
