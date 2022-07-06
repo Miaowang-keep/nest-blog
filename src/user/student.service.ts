@@ -5,22 +5,25 @@
  * @LastEditTime: 2021-08-24 09:36:03
  * @LastEditors: miaowang
  */
-import { Inject, Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { UserEntity } from './Entity/studentEntity';
 import { CreateUser } from './Dto/createUserDao';
-import { UserDto } from './Dto/student.dto';
 import { createUserBo } from './Bo/createUserBo';
 import { Response } from './Bo/Response';
-import { sequelize } from '../database/sequelize';
 import { makeSalt, encryptPassword } from '../utils/cryptogram';
 import { UpdateUserDto } from './Dto/updateUserDao';
 import { Logger } from 'src/utils/log4js';
 import * as utils from '../share/utils';
-import * as sqlUtils from '../share/sqlUtils';
 import { UserRepository } from './student.providers';
 import { getManager } from 'typeorm';
 import { queryUserListDto } from './Dto/pageparam';
 import { QueryUserListReq } from './Dto/queryUserListDto';
+import { CommonUserBo } from './Bo/commonUserBo';
+import { UploadParams } from './Dto/uploadParams';
+
+const fsPromises = require('fs').promises;
+const fs = require('fs');
+const path = require('path');
 
 @Injectable()
 export class StudentService {

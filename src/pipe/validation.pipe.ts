@@ -14,6 +14,7 @@ import {
 import { Logger } from 'src/utils/log4js';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
+import * as utils from '../share/utils';
 
 /*
  ArgumentMetadata 接口中包含三个参数：
@@ -51,6 +52,13 @@ export class ValidationPipe implements PipeTransform {
     if (errorLists && errorLists.length) {
       errorLists.forEach((errorList) => {
         const msgArray = errorList.children;
+        if (
+          errorList.constraints &&
+          !utils.isEmptyObject(errorList.constraints)
+        ) {
+          result += `${Object.values(errorList.constraints)}  `;
+        }
+
         if (msgArray && msgArray.length > 0) {
           msgArray.forEach((item) => {
             result += `${Object.values(item.constraints)}  `;

@@ -25,7 +25,7 @@ const log4jsConfig = {
     },
     app: {
       type: 'dateFile',
-      filename: `${baseLogPath}/app-out/app.log`,
+      filename: `${baseLogPath}/app-out/app-out.log`,
       alwaysIncludePattern: true,
       layout: {
         type: 'pattern',

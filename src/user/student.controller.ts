@@ -18,6 +18,7 @@ import {
   UseGuards,
   UsePipes,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import {
   ApiOkResponse,
@@ -26,6 +27,7 @@ import {
   ApiBody,
   ApiBearerAuth,
 } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
 import { createUserBo } from './Bo/createUserBo';
 import { queryUserListDto } from './Dto/pageparam';
@@ -34,6 +36,7 @@ import { Response } from './Bo/response';
 import { UserDto } from './Dto/student.dto';
 import { LoginDTO } from './Dto/userDao';
 import { CreateUser } from './Dto/createUserDao';
+import { UploadParams } from './Dto/uploadParams';
 import { UpdateUserDto } from './Dto/updateUserDao';
 import { CheckUserNameDao } from './Dto/checkUserNameDao';
 import { AuthService } from '../auth/auth.service';
@@ -145,5 +148,13 @@ export class StudentController {
     @Body() queryparams: queryUserListDto<QueryUserListReq>,
   ): Promise<Response> {
     return this.studentService.getUserList(queryparams);
+  }
+
+  @Post('fileUpload')
+  @UseInterceptors(FileInterceptor('Chunk'))
+  commonFileUpload(@Body() uploadParams: UploadParams, @UploadedFile() files) {
+    console.log('uploadParams', uploadParams);
+    console.log('files', files);
+    return this.studentService.commonFileUpload(uploadParams, files);
   }
 }

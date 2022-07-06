@@ -14,15 +14,6 @@ export class LoggerMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
     const code = res.statusCode; //设置响应码
     next();
-    /*     const logFormat = `Method: ${req.method} \n Request original url: ${req.originalUrl} \n IP: ${req.ip} \n Status code: ${code} \n`;
-    if (code >= 500) {
-      Logger.error(logFormat);
-    } else if (code >= 400) {
-      Logger.warn(logFormat);
-    } else {
-      Logger.access(logFormat);
-      Logger.log(logFormat);
-    } */
   }
 }
 

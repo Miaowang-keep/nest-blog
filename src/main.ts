@@ -9,11 +9,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
+import { Logger } from 'src/utils/log4js';
 import { ValidationPipe } from './pipe/validation.pipe';
 import * as express from 'express';
 import { logger } from './middleware/logger.middleware';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
 import { FormatterDateInterceptor } from './interceptor/formatterDate.interceptor';
+const { fork } = require('child_process');
+const path = require('path');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -28,6 +31,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new FormatterDateInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
   app.setGlobalPrefix('blog');
+  app.enableCors(); //设置允许跨域
   const swaggerOptions = new DocumentBuilder()
     .addBearerAuth()
     .setTitle(`个人博客API文档`)

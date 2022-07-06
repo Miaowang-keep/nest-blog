@@ -10,7 +10,7 @@ import { Dialect } from 'sequelize/types';
 export const dbConfig = {
   mysql: {
     port: 3307,
-    host: '172.31.60.75',
+    host: 'localhost',
     username: 'root',
     password: '123456',
     database: 'koa2', // 库名
