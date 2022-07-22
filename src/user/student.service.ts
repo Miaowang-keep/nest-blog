@@ -19,7 +19,6 @@ import { getManager } from 'typeorm';
 import { queryUserListDto } from './Dto/pageparam';
 import { QueryUserListReq } from './Dto/queryUserListDto';
 import { CommonUserBo } from './Bo/commonUserBo';
-import { UploadParams } from './Dto/uploadParams';
 
 const fsPromises = require('fs').promises;
 const fs = require('fs');
@@ -176,6 +175,6 @@ export class StudentService {
       .take(pageParam.pageSize)
       .getMany();
 
-    return new Response('更新成功！', users, 200);
+    return new Response('更新成功！', [new CommonUserBo(users[0])], 200);
   }
 }

@@ -18,6 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConfig } from '../config/db';
 import { PermissionModule } from './permission/permission.module';
 import { MenuModule } from './menu/menu.module';
+import { FileUploadModule } from './file-upload/file-upload.module';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { MenuModule } from './menu/menu.module';
       username: dbConfig.mysql.username,
       password: dbConfig.mysql.password,
       database: dbConfig.mysql.database,
-      synchronize: true,
+      synchronize: false,
       autoLoadEntities: true,
       logging: true,
     }),
@@ -38,6 +39,7 @@ import { MenuModule } from './menu/menu.module';
     RoleModule,
     PermissionModule,
     MenuModule,
+    FileUploadModule,
   ],
   controllers: [AppController, StudentController, RoleController],
   providers: [AppService],

@@ -16,6 +16,7 @@ export const dbConfig = {
     database: 'koa2', // 库名
     connectionLimit: 10, // 连接限制
     dialect: 'mysql' as Dialect,
+    synchronize: false,
     define: {
       timestamps: false,
     },
