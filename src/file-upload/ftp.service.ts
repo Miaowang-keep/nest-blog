@@ -35,15 +35,17 @@ export class FtpService {
     this.ftpConnect = new ftp();
     return new Promise((resolve) => {
       this.ftpConnect.on('ready', () => {
-        this.ftpConnect.list(path, (err, list: any) => {
-          list.map((item: FileProperty) => {
-            item.name = Buffer.from(item.name, 'binary').toString('utf8');
+        this.ftpConnect.cwd(path, () => {
+          this.ftpConnect.list((err, list: any) => {
+            list.map((item: FileProperty) => {
+              item.name = Buffer.from(item.name, 'binary').toString('utf8');
+            });
+            resolve(list);
+            if (err) {
+              throw new BadRequestException('文件服务器打开文件列表错误！');
+            }
+            this.ftpConnect.end();
           });
-          resolve(list);
-          if (err) {
-            throw new BadRequestException('文件服务器打开文件列表错误！');
-          }
-          this.ftpConnect.end();
         });
       });
       this.ftpConnect.connect(params);
@@ -59,7 +61,7 @@ export class FtpService {
     this.ftpConnect = new ftp();
     return new Promise((resolve) => {
       this.ftpConnect.on('ready', () => {
-        this.ftpConnect.put(uploadFilePath, savePath, (err) => {
+        this.ftpConnect.put(uploadFilePath, '/ftpMiao/', (err) => {
           if (err) {
             console.log('err', err);
             resolve('上传失败');

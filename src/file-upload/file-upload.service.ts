@@ -125,15 +125,14 @@ export class FileUploadService {
   async ftpUpload() {
     const upLoadFilePath = path.join(__dirname, '..', '1.txt');
     this.ftpService
-      .uploadFile(
+      .getDirList(
         {
-          host: '172.17.200.92',
+          host: '172.17.203.40',
           port: '21',
           user: 'wang',
           password: 'wang',
         },
-        upLoadFilePath,
-        '1.txt',
+        '/home/ftp/ftpMiao',
       )
       .then((response) => {
         console.log(response);
