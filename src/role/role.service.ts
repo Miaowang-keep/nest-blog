@@ -196,8 +196,6 @@ export class RoleService {
     }
     sql = sql.substr(0, sql.length - 1);
     const res = await getManager().query(sql);
-    Logger.info('res');
-    Logger.info(res);
     return new Response('调用成功', null, 200);
   }
 }

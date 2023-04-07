@@ -18,6 +18,7 @@
       <destination value="FILE" />
       <format value="EXCEL" />
       <charset value="GBK" />
+      <charset value="GBK" />
     </export-instructions>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -40,13 +41,20 @@ insert into menu (pmenuid,url,`menuType`,`menuDesc`,createUserid,`menuName`,orde
 insert into menu (pmenuid,url,`menuType`,`menuDesc`,createUserid,`menuName`,`order`,`path`,`menuState`)
   values (8,'blog/article','1','文章维护',49,'文章维护',6,'article','Y')
 
-select * from rolemenu]]></console>
+select * from rolemenu
+
+update menu m  set m.url = `/system/user.vue` where m.menuid = 2
+
+select  * from menu
+
+select * from file]]></console>
     </connection>
   </component>
+  <component name="DBNavigator.Project.DatabaseEditorStateManager">
+    <last-used-providers />
+  </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="bcbb7006-4e64-49be-87b0-d81c204bbc7c" object-ref="consoles/nest_blog" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="bcbb7006-4e64-49be-87b0-d81c204bbc7c" />
@@ -138,7 +146,7 @@ select * from rolemenu]]></console>
           <alternative-statement-delimiter value="" />
         </details>
         <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
-          <object-type-filter use-master-settings="true">
+          <object-type-filter>
             <object-type name="SCHEMA" enabled="true" />
             <object-type name="USER" enabled="true" />
             <object-type name="ROLE" enabled="true" />
@@ -209,6 +217,7 @@ select * from rolemenu]]></console>
         <object-type name="FUNCTION" sorting-type="NAME" />
         <object-type name="PROCEDURE" sorting-type="NAME" />
         <object-type name="ARGUMENT" sorting-type="POSITION" />
+        <object-type name="TYPE ATTRIBUTE" sorting-type="POSITION" />
       </sorting>
       <default-editors>
         <object-type name="VIEW" editor-type="SELECTION" />
@@ -255,11 +264,11 @@ select * from rolemenu]]></console>
         <nulls-first value="true" />
         <max-sorting-columns value="4" />
       </sorting>
-      <tracking-columns>
-        <columnNames value="" />
+      <audit-columns>
+        <column-names value="" />
         <visible value="true" />
         <editable value="false" />
-      </tracking-columns>
+      </audit-columns>
     </dataset-grid-settings>
     <dataset-editor-settings>
       <text-editor-popup>
@@ -298,8 +307,6 @@ select * from rolemenu]]></console>
           <content-type name="JavaScript" enabled="true" />
           <content-type name="JSON" enabled="true" />
           <content-type name="JSON5" enabled="true" />
-          <content-type name="JSP" enabled="true" />
-          <content-type name="JSPx" enabled="true" />
           <content-type name="YAML" enabled="true" />
         </content-types>
       </qualified-text-editor>
