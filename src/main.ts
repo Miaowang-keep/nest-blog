@@ -31,6 +31,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new FormatterDateInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
   app.setGlobalPrefix('blog');
+
   app.enableCors(); //设置允许跨域
   const swaggerOptions = new DocumentBuilder()
     .addBearerAuth()
